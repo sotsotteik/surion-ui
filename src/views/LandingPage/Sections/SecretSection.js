@@ -7,7 +7,7 @@ function SecretSection() {
     const [images, setImages] = useState([])
 
     useEffect(() => {
-        axios.get("/index/layout")
+        axios.get("https://surion-api.herokuapp.com/index/layout")
         .then(resp => {
             
             setLayout(resp.data.layout)
