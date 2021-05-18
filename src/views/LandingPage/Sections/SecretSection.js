@@ -7,7 +7,7 @@ function SecretSection() {
     const [images, setImages] = useState([])
 
     useEffect(() => {
-        axios.get("/layout")
+        axios.get("/index/layout")
         .then(resp => {
             
             setLayout(resp.data.layout)
