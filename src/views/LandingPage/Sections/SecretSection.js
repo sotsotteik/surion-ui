@@ -7,7 +7,8 @@ function SecretSection() {
     const [images, setImages] = useState([])
 
     useEffect(() => {
-        axios.get("/index/layout")
+
+        axios.get(process.env.REACT_APP_SURION_API_ENDPOINT+"/index/layout")
         .then(resp => {
             
             setLayout(resp.data.layout)

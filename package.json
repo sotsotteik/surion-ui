@@ -58,6 +58,5 @@
       "not op_mini all"
     ],
     "development": []
-  },
-  "proxy": "https://surion-api.herokuapp.com"
+  }
 }
