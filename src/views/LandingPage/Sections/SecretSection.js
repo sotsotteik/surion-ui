@@ -1,5 +1,8 @@
 import React, {useState, useEffect} from 'react'
+import AccountSection from "./AccountSection";
+import ImageUploaderSection from "./ImageUploaderSection";
 import axios from 'axios'
+
 
 function SecretSection() {
 
@@ -19,14 +22,14 @@ function SecretSection() {
         })
     },[])
 
-    return (
-        
+    return ( 
         <div>
+            <ImageUploaderSection />
             {
                 images ?
                 images.map(image => <img key={image.id} src={image.url}/>) : null
             }
-            <h1>cjsdcsc</h1>
+            {/*<AccountSection />*/}
         </div>
     )
 }
