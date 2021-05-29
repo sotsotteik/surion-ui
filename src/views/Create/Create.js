@@ -3,7 +3,7 @@ import React from 'react'
 function Create() {
     return (
         <div>
-            Test
+            Test create page
         </div>
     )
 }
