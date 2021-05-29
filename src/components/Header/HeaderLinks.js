@@ -59,6 +59,30 @@ export default function HeaderLinks(props) {
           <CloudDownload className={classes.icons} /> Download
         </Button>
       </ListItem>
+
+      <ListItem className={classes.listItem}>
+          <Button
+            component={Link}
+            to="/my-items"
+            color="transparent"
+            className={classes.navLink}
+          >
+            <CloudDownload className={classes.icons} /> My Items
+          </Button>
+      </ListItem>
+      <ListItem className={classes.listItem}>
+
+          <Button
+            component={Link}
+            to="/landing-page"
+            color="transparent"
+            className={classes.navLink}
+          >
+            <CloudDownload className={classes.icons} /> Create
+          </Button>
+
+      </ListItem>
+
       <ListItem className={classes.listItem}>
         {/*<Tooltip title="Delete">
           <IconButton aria-label="Delete">
