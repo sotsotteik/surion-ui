@@ -25,7 +25,7 @@ const dashboardRoutes = [];
 
 var hist = createBrowserHistory();
 const RootRouter =()=>(
-  <Router history={hist}>
+  <HashRouter history={hist}>
     <Header
         color="transparent"
         routes={dashboardRoutes}
@@ -49,7 +49,7 @@ const RootRouter =()=>(
           <Route exact strict path="/create" component={Create} />
         </Switch>
         <Footer />    
-    </Router>
+    </HashRouter>
 )
 
 ReactDOM.render(<RootRouter />, document.getElementById("root"));
