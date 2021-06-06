@@ -67,18 +67,7 @@ export default function Details(props) {
     );
     const navImageClasses = classNames(classes.imgRounded, classes.imgGallery);
     return (
-        <div>
-        <Header
-            color="transparent"
-            brand="Material Kit React"
-            rightLinks={<HeaderLinks />}
-            fixed
-            changeColorOnScroll={{
-            height: 200,
-            color: "white",
-            }}
-            {...rest}
-        />
+        <>
         <Parallax
             small
             filter
@@ -171,7 +160,6 @@ export default function Details(props) {
             </div>
             </div>
         </div>
-        <Footer />
-        </div>
+        </>
     );
 }

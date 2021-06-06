@@ -13,13 +13,30 @@ import Components from "views/Components/Components.js";
 import LandingPage from "views/LandingPage/LandingPage.js";
 import ProfilePage from "views/ProfilePage/ProfilePage.js";
 import LoginPage from "views/LoginPage/LoginPage.js";
-import Details from "views/Details/Details.js";
+import Details from "views/Details";
 import Create from "views/Create/Create.js";
 
-var hist = createBrowserHistory();
+// core components
+import Header from "components/Header/Header.js";
+import Footer from "components/Footer/Footer.js";
+import HeaderLinks from "components/Header/HeaderLinks.js";
 
-ReactDOM.render(
-    <HashRouter history={hist}>
+const dashboardRoutes = [];
+
+var hist = createBrowserHistory();
+const RootRouter =()=>(
+  <Router history={hist}>
+    <Header
+        color="transparent"
+        routes={dashboardRoutes}
+        brand="Material Kit React"
+        rightLinks={<HeaderLinks />}
+        fixed
+        changeColorOnScroll={{
+          height: 400,
+          color: "white"
+        }}   
+      />
         <Switch>
           <Route exact strict path="/landing-page" component={LandingPage} />
           <Route exact strict path="/profile-page" component={ProfilePage} />
@@ -28,10 +45,11 @@ ReactDOM.render(
 
           <Route exact strict path="/" component={Main} />
           <Route exact strict path="/my-items" component={MyItems} />
-          <Route exact strict path="/details" component={Details} />
+          <Route exact strict path="/details/:address/:tokenid" component={Details} />
           <Route exact strict path="/create" component={Create} />
         </Switch>
-    </HashRouter>
-  ,
-  document.getElementById("root")
-);
+        <Footer />    
+    </Router>
+)
+
+ReactDOM.render(<RootRouter />, document.getElementById("root"));

@@ -125,18 +125,7 @@ export default function MyItems(props) {
     const navImageClasses = classNames(classes.imgRounded, classes.imgGallery);
     return (
         
-    <div>
-        <Header
-            color="transparent"
-            brand="Material Kit React"
-            rightLinks={<HeaderLinks />}
-            fixed
-            changeColorOnScroll={{
-            height: 200,
-            color: "white",
-            }}
-            {...rest}
-        />
+    <>
         <Parallax
             small
             filter
@@ -186,7 +175,10 @@ export default function MyItems(props) {
                                                 <CardBody>
                                                 <h4 className={classes.cardTitle}>{data.metadata.name}</h4>
                                                 <p>{data.metadata.description}</p>
-                                                <Button color="primary">View</Button>
+                                                <Link to={{ pathname: `/details/${process.env.REACT_APP_SURION_CONTRACT_ADDRESS}/${data.tokenId}` }} id="nav_mybet">
+                                                    <Button color="primary">View</Button>
+                                                </Link>
+                                                
                                                 </CardBody>
                                             </Card>
                                         </GridItem>
@@ -251,7 +243,6 @@ export default function MyItems(props) {
             </div>
             </div>
         </div>
-        <Footer />
-    </div>
+    </>
   );
 }
