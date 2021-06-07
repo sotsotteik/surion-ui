@@ -52,6 +52,7 @@ export default function Create(props) {
     const { ...rest } = props
 
     const handleCreate  = async () => {
+        
         if(mainFile.length === 0){
             setSetErrorMsg('Please upload at least one file.')
             return
@@ -68,16 +69,21 @@ export default function Create(props) {
             setSetErrorMsg('Seller Fee can not be empty.')
             return
         }
+
+        const accounts = await ethereum.request({
+            method: 'eth_requestAccounts'
+        })
+
         const meta = {
           "name": title,
           "description": description,
           "image": mainSourceUrl,
           "external_link": "https://testtest.com",
           "seller_fee_basis_points": sellerFee,
-          "fee_recipient": "abc"
+          "fee_recipient": accounts[0],
+          "platform": "SurionNFT"
         }
         
-    
         const metaIPFS = await ipfs.add(JSON.stringify(meta))
     
         const tokenURIHash = metaIPFS.path
@@ -95,10 +101,6 @@ export default function Create(props) {
         const secretHash = secretIPFS.path
         console.log(secretHash)
         
-        const accounts = await ethereum.request({
-            method: 'eth_requestAccounts'
-        })
-           
         var surion = new web3.eth.Contract(surionABI, process.env.REACT_APP_SURION_CONTRACT_ADDRESS);
        
         var totalSupply = await surion.methods.totalSupply().call();
@@ -246,7 +248,7 @@ export default function Create(props) {
       </Parallax>
       <div className={classNames(classes.main, classes.mainRaised)}>
         <div className={classes.container}>
-          <Button variant="contained" color="secondary" onClick={handleCreate} >Create NTF</Button>
+          <Button variant="contained" color="primary" onClick={handleCreate} >Create NTF</Button>
           <p><InputLabel htmlFor="component-simple">{errorMsg}</InputLabel></p>
           <Typography component="div" style={{ backgroundColor: '#cfe8fc', height: 'auto', margin:'10px' }}>
             <GridContainer>
@@ -257,36 +259,34 @@ export default function Create(props) {
               </Paper>
               </GridItem>
               <GridItem xs={12} sm={12} md={6}>
-                  <p>
+                  
                   <InputLabel htmlFor="component-simple">Title</InputLabel>
                   <Input type="text" value={title} onChange={e=>setTitle(e.target.value)} />
-                  </p>
-                  <p>
+                  
                   <InputLabel htmlFor="component-simple">Description</InputLabel>
                   <TextareaAutosize value={description} onChange={e=>setDescription(e.target.value)} />
-                  </p>
-                  <p>
+                  
                     <InputLabel htmlFor="component-simple">Seller Fee</InputLabel>
                     <Input type="text" value={sellerFee} onChange={e=>setSellerFee(e.target.value)} />
-                  </p>
+                  
                 </GridItem>
               </GridContainer>
           </Typography>
           <Typography component="div" style={{ backgroundColor: '#cfe8fc', height: 'auto', margin:'10px' }}>
             <RUG onChange={(images) => onChangeFiles(images,'image')} />
-            <input type='button' id='imageUploadBtn'variant="contained" color="secondary" onClick={()=>uploadSubFile(images,'image')} value='upload' />
+            <input type='button' id='imageUploadBtn' variant="contained" onClick={()=>uploadSubFile(images,'image')} value='upload' />
             <CircularProgressWithLabel id='imageProgres' value={progress} />
           </Typography>
           <Typography component="div" style={{ backgroundColor: '#cfe8fc', height: 'auto', margin:'10px' }}>
             <InputLabel htmlFor="component-simple">Upload Video</InputLabel>
             <input type="file" className="form-control" multiple onChange={e=>onChangeFiles(e, 'video')} accept="video/mp4,video/x-m4v,video/*" />
-            <input type='button' id='videoUploadBtn'ariant="contained" color="secondary" onClick={()=>uploadSubFile(videos,'video')} value='upload' />
+            <input type='button' id='videoUploadBtn' variant="contained" onClick={()=>uploadSubFile(videos,'video')} value='upload' />
             <CircularProgressWithLabel value={progress} />
           </Typography>
           <Typography component="div" style={{ backgroundColor: '#cfe8fc', height: 'auto', margin:'10px' }}>
             <InputLabel htmlFor="component-simple">Upload PDF</InputLabel>
             <input type="file" className="form-control" multiple onChange={e=>onChangeFiles(e, 'pdf')} accept="application/pdf" />
-            <input type='button' id='pdfUploadBtn' variant="contained" color="secondary" onClick={()=>uploadSubFile(pdfs,'pdf')} value='upload' />
+            <input type='button' id='pdfUploadBtn' variant="contained" onClick={()=>uploadSubFile(pdfs,'pdf')} value='upload' />
             <CircularProgressWithLabel value={progress} />
           </Typography>
         </div>

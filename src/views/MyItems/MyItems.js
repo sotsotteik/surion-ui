@@ -69,10 +69,17 @@ export default function MyItems(props) {
     const [testva, setTestva] = useState(['def'])
 
     async function loadchain() {
+
         const accounts = await ethereum.request({
             method: 'eth_requestAccounts'
         })
         setAccount(accounts[0])
+
+        const allTokens = await axios.get('https://api-rinkeby.etherscan.io/api?module=account&action=tokennfttx&address='+accounts[0]+'&startblock=0&endblock=999999999&sort=asc&apikey=GIQKFU59KMSBAAKRRW2Q8NKHDRK7B48PVJ')
+        .then(response => {
+            console.log(response)
+        })
+
 
         var surion = new web3.eth.Contract(surionABI, process.env.REACT_APP_SURION_CONTRACT_ADDRESS);
 
@@ -91,7 +98,7 @@ export default function MyItems(props) {
                 //const secretURIHash = await surion.methods.getSecretURI(tokenId).call()
     //console.log(secretURIHash)
                 const metadata = await axios.get('https://ipfs.io/ipfs/'+tokenURIHash)
-                console.log(metadata)
+                //console.log(metadata)
                 setCardData(cardData => cardData.concat({
                     "tokenId": tokenId,
                     "metadata": metadata.data
@@ -111,7 +118,9 @@ export default function MyItems(props) {
 
         
         return () => {
-            setCardData([])
+            if (cardData.length > 0) {
+                setCardData([])
+            }
         }
     },[])
 
@@ -167,7 +176,7 @@ export default function MyItems(props) {
                                         <GridItem key={data.tokenId} xs={4} sm={4} md={4}>
                                             <Card style={{width: "20rem"}}>
                                                 <img
-                                                style={{height: "180px", width: "100%", display: "block"}}
+                                                style={{ width: "100%", display: "block"}}
                                                 className={classes.imgCardTop}
                                                 src={data.metadata.image}
                                                 alt="Card-img-cap"

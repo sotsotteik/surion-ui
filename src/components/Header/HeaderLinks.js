@@ -74,7 +74,7 @@ export default function HeaderLinks(props) {
 
           <Button
             component={Link}
-            to="/landing-page"
+            to="/create"
             color="transparent"
             className={classes.navLink}
           >

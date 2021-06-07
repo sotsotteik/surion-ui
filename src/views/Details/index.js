@@ -50,16 +50,28 @@ export default function Details(props) {
         })
         setAccount(accounts[0])
 
-        var surion = new web3.eth.Contract(surionABI, process.env.REACT_APP_SURION_CONTRACT_ADDRESS);
-          const tokenId = match.params.tokenid
-          debugger
-          const tokenURIHash = await surion.methods.tokenURI(tokenId).call()
-          const metadata = await axios.get('https://ipfs.io/ipfs/'+tokenURIHash)
-          console.log(metadata)
-          setTitle(metadata.data.name)
-          setDescription(metadata.data.description)
-          console.log(metadata)
-          setmainFileUrl(metadata.data.image)       
+        //var surion = new web3.eth.Contract(surionABI, process.env.REACT_APP_SURION_CONTRACT_ADDRESS);
+        var surion = new web3.eth.Contract(surionABI, match.params.address);
+        console.log(surion)
+        
+        const tokenId = match.params.tokenid
+        
+        // Get Metadata
+        const tokenURIHash = await surion.methods.tokenURI(tokenId).call()
+        console.log(tokenURIHash)
+        /*
+        const metadata = await axios.get('https://ipfs.io/ipfs/'+tokenURIHash)
+
+        // Set Metadata
+        setTitle(metadata.data.name)
+        setDescription(metadata.data.description)
+        setmainFileUrl(metadata.data.image)       
+
+        // Get Secret Data
+        const secretURIHash = await surion.methods.getSecretURI(tokenId).call()
+        const secretData = await axios.get('https://ipfs.io/ipfs/'+secretURIHash)
+        console.log(secretData)
+        */
     }
 
     const images = [
