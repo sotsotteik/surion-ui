@@ -37,7 +37,7 @@ export default function Details(props) {
     useEffect( () => {
         loadchain()
         return () => {
-            setCardData([])
+            
         }
     },[])
 
@@ -52,14 +52,13 @@ export default function Details(props) {
 
         //var surion = new web3.eth.Contract(surionABI, process.env.REACT_APP_SURION_CONTRACT_ADDRESS);
         var surion = new web3.eth.Contract(surionABI, match.params.address);
-        console.log(surion)
+        console.log(match.params.address)
         
         const tokenId = match.params.tokenid
         
         // Get Metadata
         const tokenURIHash = await surion.methods.tokenURI(tokenId).call()
         console.log(tokenURIHash)
-        /*
         const metadata = await axios.get('https://ipfs.io/ipfs/'+tokenURIHash)
 
         // Set Metadata
@@ -71,7 +70,7 @@ export default function Details(props) {
         const secretURIHash = await surion.methods.getSecretURI(tokenId).call()
         const secretData = await axios.get('https://ipfs.io/ipfs/'+secretURIHash)
         console.log(secretData)
-        */
+        
     }
 
     const images = [
