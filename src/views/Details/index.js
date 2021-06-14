@@ -3,8 +3,8 @@ import React, {useState, useEffect} from 'react'
 import classNames from "classnames"
 // @material-ui/core components
 import InputLabel from '@material-ui/core/InputLabel';
-import Typography from '@material-ui/core/Typography';
-import Paper from '@material-ui/core/Paper';
+import Card from "components/Card/Card.js";
+import CardBody from "components/Card/CardBody.js";
 import { makeStyles } from "@material-ui/core/styles"
 const { create } = require('ipfs-http-client')
 import Web3 from 'web3'
@@ -33,6 +33,9 @@ export default function Details(props) {
     const [description, setDescription] = useState('')
     const [mainFileUrl, setmainFileUrl] = useState()
     const match = useRouteMatch()
+    const [images,setImages] = useState([])
+    const [videos,setVideos] = useState([])
+    const [pdfs,setPdfs]= useState([])
 
     useEffect( () => {
         loadchain()
@@ -70,23 +73,27 @@ export default function Details(props) {
         const secretURIHash = await surion.methods.getSecretURI(tokenId).call()
         const secretData = await axios.get('https://ipfs.io/ipfs/'+secretURIHash)
         console.log(secretData)
-        
+        if(secretData.data.images){
+          let list = []
+          Array.from(secretData.data.images).map((item)=>{
+            list.push(
+              {
+                original: item.url,
+                thumbnail: item.url
+              }
+          )
+          console.log('list', list)
+        })
+          setImages(list)
+        }
+        if(secretData.data.video){
+          console.log('video', secretData.data.video)
+          setVideos(secretData.data.video)
+        }
+        if(secretData.data.video){
+          setPdfs(secretData.data.pdf)
+        }
     }
-
-    const images = [
-      {
-        original: 'https://picsum.photos/id/1018/1000/600/',
-        thumbnail: 'https://picsum.photos/id/1018/250/150/',
-      },
-      {
-        original: 'https://picsum.photos/id/1015/1000/600/',
-        thumbnail: 'https://picsum.photos/id/1015/250/150/',
-      },
-      {
-        original: 'https://picsum.photos/id/1019/1000/600/',
-        thumbnail: 'https://picsum.photos/id/1019/250/150/',
-      },
-    ];
 
     return (
     <>
@@ -118,37 +125,55 @@ export default function Details(props) {
       </Parallax>
       <div className={classNames(classes.main, classes.mainRaised)}>
         <div className={classes.container}>
-          <Typography component="div" style={{ backgroundColor: '#cfe8fc', height: 'auto', margin:'10px' }}>
-            <GridContainer>
-              <GridItem xs={12} sm={12} md={9}>
-              <Paper style={{ backgroundColor: '#cfe8fc', height: 'auto', margin:'10px' }}>
-                <img src={mainFileUrl}  width="auto" height="auto" />
-              </Paper>
-              </GridItem>
-              <GridItem xs={12} sm={12} md={3}>
-                  <p>
+        <GridContainer>
+            <GridItem xs={12} sm={12} md={6}>
+              <Card style={{width: "100%"}}>
+              <img src={mainFileUrl}  width="auto" height="auto" />
+              </Card>
+            </GridItem>
+            <GridItem xs={12} sm={12} md={6}>
+              <Card style={{width: "100%"}}>
+                <p>
                   <InputLabel htmlFor="component-simple">{title}</InputLabel>
-                  </p>
-                  <p>
-                    {description}
-                  </p>
-                </GridItem>
-              </GridContainer>
-          </Typography>
-          <Typography component="div" style={{ backgroundColor: '#cfe8fc', height: 'auto', margin:'10px' }}>
-            <InputLabel htmlFor="component-simple">Gallery</InputLabel>
-            <ImageGallery items={images} />
-          </Typography>
-          <Typography component="div" style={{ backgroundColor: '#cfe8fc', height: 'auto', margin:'10px' }}>
-            <InputLabel htmlFor="component-simple">Videos</InputLabel>
-            <ReactPlayer url="https://gateway.ipfs.io/ipfs/QmW3xsGiypfwthGqGUQrBvVcUZ2omA9K9WhuqXjd8LhCSm" loop={true} playing={true} controls={true} />
-          </Typography>
-          <Typography component="div" style={{ backgroundColor: '#cfe8fc', height: 'auto', margin:'10px' }}>
-            <InputLabel htmlFor="component-simple">Document</InputLabel>
-            <object data="http://africau.edu/images/default/sample.pdf" type="application/pdf" width="500" height="500">
-              <p>Alternative text - include a link <a href="http://africau.edu/images/default/sample.pdf">to the PDF!</a></p>
-            </object>
-            </Typography>
+                </p>
+                <p>
+                  {description}
+                </p>
+              </Card>
+            </GridItem>
+            <GridItem xs={12} sm={12} md={12}>
+              {images.length>0?
+              <Card>
+                <CardBody>
+                  <InputLabel htmlFor="component-simple">Gallery</InputLabel>
+                  <ImageGallery items={images} />     
+                </CardBody>
+              </Card>
+              :null}
+            </GridItem>
+            <GridItem xs={12} sm={12} md={12}>
+            {videos.length>0?
+              <Card>
+                <CardBody>
+                 <InputLabel htmlFor="component-simple">Videos</InputLabel>
+                 <ReactPlayer url={videos[0].url} loop={true} playing={true} controls={true} />
+                </CardBody>
+              </Card>
+            :null}
+            </GridItem>
+            <GridItem xs={12} sm={12} md={12}>
+            {pdfs.length>0?
+              <Card>
+                  <CardBody>
+                    <InputLabel htmlFor="component-simple">Document</InputLabel>
+                    <object data={pdfs[0].url} type="application/pdf" width="500" height="500">
+                      <p>Alternative text - include a link <a href={pdfs[0].url}>to the PDF!</a></p>
+                    </object>
+                  </CardBody>
+                </Card>
+              :null}
+            </GridItem>
+          </GridContainer> 
         </div>
       </div>
     </>
